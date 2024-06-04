@@ -69,12 +69,13 @@ else:
                                                 conversation_number=conversation_number,
                                                 ui_flg=True)
 
-
-with st.expander("See explanation"):
-    st.write('Evaluation result')
-    evaluate_result = tools.evaluate_conversation(prompt_evaluator = tools.promptBank['evaluate_prompt']['PROMPTS']['EVALUATION01'],
+with st.expander("Evaluation results will be here"):
+    evaluate_result = tools.evaluate_conversation(prompt_evaluator = tools.promptBank['evaluate_prompt']['PROMPTS'][flag_prompt_evaluator],
                                                     conversation=Conversation)
 
-    # convert json to dataframe
-    df = tools.convert_to_df(evaluate_result)
-    st.dataframe(df)
+    try:
+        # convert json to dataframe
+        df = tools.convert_to_df(evaluate_result)
+        st.dataframe(df)
+    except:
+        st.write(evaluate_result)

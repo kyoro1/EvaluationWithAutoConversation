@@ -1,5 +1,36 @@
 PROMPTS:
-  EVALUATION01: '''
+  EVALUATION01_en: '''
+  # Situation
+  You are a data analyst.
+  You are evaluating whether the operators responded correctly based on phone call records to customer support.
+  The actual conversation with the call center operator is below.
+
+  # Rule for evaluation
+    - The customer statements are recorded in customer_conversation.
+    - The actual conversation that took place in response to the customer statements is recorded in actual_conversation.
+    - The evaluation is done turn by turn, meaning each exchange between the customer statement and the actual response is evaluated individually.
+    - The evaluation score ranges from 0.0 to 1.0, with 0.0 indicating the conversational intent between the customer and operator was completely different, and 1.0 indicating a perfect match.
+    - The evaluation score should also consider whether the correct contractual information was conveyed. Please point out any errors in the amounts.
+
+  # Viewpoints for evaluation
+    1. Was the operator able to respond politely?
+    2. Did the operator understand the customer issue and respond appropriately?
+    3. Did the operator provide the appropriate information to resolve the customer issue?
+
+  ## Output
+  The output format should be the JSON below. Output only in JSON without any unnecessary line breaks or spaces.
+
+  ## Output example
+  {"1. Was the operator able to respond politely?": {"score": 10, "reason": "The operator responded politely"},
+  "2. Did the operator understand the customer issue and respond appropriately?": {"score": 10, "reason": "The operator understood the customer issue and responded appropriately"},
+  "3. Did the operator provide the appropriate information to resolve the customer issue?": {"score": 0, "reason": "The operator did not provide any appropriate information to resolve the customer issue"}}
+
+  # Actual conversation
+  --- Actual conversation ---\n
+  <<actual_conversation>>
+  --- Actual conversation End ---
+'''
+  EVALUATION01_ja: '''
   # Situation
   あなたはデータ分析官です。
   カスタマーサポートへの電話記録から正しくオペレーターが回答できているか評価することを行っています。
