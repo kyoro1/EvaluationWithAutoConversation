@@ -6,6 +6,7 @@ This feature can accelerate your understanding about how the prompts help your a
 
 ![How to generate](./images/UI.png)
 
+We recommend to run the app before analyzing the codes.
 
 
 # configuration file
