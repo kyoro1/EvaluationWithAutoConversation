@@ -1,4 +1,6 @@
 import os
+import json
+import pandas as pd
 import yaml
 import openai
 from openai import AzureOpenAI
@@ -127,83 +129,92 @@ class AOAI_TOOLS(LOAD_CONFIG):
     def generate_conversation(self,
                               conversation_number: int,
                               prompt_caller: str,
-                              prompt_operator: str) -> None:
+                              prompt_operator: str,
+                              ui_flg: bool=False,) -> None:
         '''
         Generate conversation with both prompts for caller and operator
         '''
-        prompts_caller, prompts_operator = [], []
-        output_operator = None
-        Conversation = []
+        try:
+            prompts_caller, prompts_operator, Conversation = [], [], []
+            output_operator = None
 
-        ## Define initial prompt for caller as system message
-        content_caller_for_caller = self.setAOAIformat(message=prompt_caller, role='system')
-        ## Define initial prompt for operator as system message
-        content_operator = self.setAOAIformat(message=prompt_operator, role='system')
+            ## Define initial prompt for caller as system message
+            content_caller_for_caller = self.setAOAIformat(message=prompt_caller, role='system')
+            ## Define initial prompt for operator as system message
+            content_operator = self.setAOAIformat(message=prompt_operator, role='system')
 
-        for _ in range(conversation_number):
-            # Caller -> Operator
-            ## Set a message for caller
-            prompts_caller.append(content_caller_for_caller)
-            ## Set 
-            if output_operator is not None:
-                content_operator = self.setAOAIformat(message=self.extractOutput(output_operator), role='assistant')
-                content_operator_for_caller = self.setAOAIformat(message=self.extractOutput(output_operator), role='user')
-                prompts_caller.append(content_operator_for_caller)
-            ## a message from caller to operator
-            output_caller = self.send_message_to_openai(message_text=prompts_caller)
-            ## Store the conversation
-            Conversation.append(self.extractOutput(output_caller))
-            print(f'Caller: {self.extractOutput(output_caller)}')
+            for _ in range(conversation_number):
+                # Caller -> Operator
+                ## Set a message for caller
+                prompts_caller.append(content_caller_for_caller)
+                ## Set 
+                if output_operator is not None:
+                    content_operator = self.setAOAIformat(message=self.extractOutput(output_operator), role='assistant')
+                    content_operator_for_caller = self.setAOAIformat(message=self.extractOutput(output_operator), role='user')
+                    prompts_caller.append(content_operator_for_caller)
+                ## a message from caller to operator
+                output_caller = self.send_message_to_openai(message_text=prompts_caller)
+                ## Store the conversation
+                statement_caller = f'Caller  : {self.extractOutput(output_caller)}'
+                Conversation.append(statement_caller)
+                if ui_flg:
+                    message(self.extractOutput(output_caller), is_user=False)
+                else:
+                    print(statement_caller)
 
-            # Operator -> Caller
-            ## Set message by caller
-            content_caller = self.setAOAIformat(message=self.extractOutput(output_caller), role='user')
-            content_caller_for_caller = self.setAOAIformat(message=self.extractOutput(output_caller), role='assistant')
-            ## Set the message in the prompt
-            prompts_operator.append(content_operator)
-            prompts_operator.append(content_caller)
-            ## a message from operator to caller
-            output_operator = self.send_message_to_openai(message_text=prompts_operator)
+                # Operator -> Caller
+                ## Set message by caller
+                content_caller = self.setAOAIformat(message=self.extractOutput(output_caller), role='user')
+                content_caller_for_caller = self.setAOAIformat(message=self.extractOutput(output_caller), role='assistant')
+                ## Set the message in the prompt
+                prompts_operator.append(content_operator)
+                prompts_operator.append(content_caller)
+                ## a message from operator to caller
+                output_operator = self.send_message_to_openai(message_text=prompts_operator)
 
-            Conversation.append(self.extractOutput(output_operator))
-            print(f'Operator: {self.extractOutput(output_operator)}')
+                statement_operator = f'Operator: {self.extractOutput(output_operator)}'
+                Conversation.append(statement_operator)
+                if ui_flg:
+                    message(self.extractOutput(output_operator), is_user=True)
+                else:
+                    print(statement_operator)
 
-    def generate_conversation_on_UI(self,
-                                    prompt_caller: str,
-                                    prompt_operator: str,
-                                    conversation_number: int) -> None:
+            return Conversation
 
-        ## Conversation
-        prompts_caller, prompts_operator = [], []
-        output_operator = None
+        except Exception as e:
+            print(e)
+            raise
 
-        ## Define initial prompt for caller as system message
-        content_caller_for_caller = self.setAOAIformat(message=prompt_caller, role='system')
-        ## Define initial prompt for operator as system message
-        content_operator = self.setAOAIformat(message=prompt_operator, role='system')
+    def evaluate_conversation(self,
+                              prompt_evaluator: str,
+                              conversation: list) -> str:
+        '''
+        Evaluate conversation
+        '''
+        try:
+            print(type(conversation), conversation)
+            connected_conversation = '\n'.join(conversation)
+            prompts_evaluator = []
+            prompt_evaluator_to_be_used = prompt_evaluator.replace('<<actual_conversation>>', connected_conversation)
 
-        for _ in range(conversation_number):
-            # Caller -> Operator
-            ## Set a message for caller
-            prompts_caller.append(content_caller_for_caller)
-            ## Set 
-            if output_operator is not None:
-                content_operator = self.setAOAIformat(message=self.extractOutput(output_operator), role='assistant')
-                content_operator_for_caller = self.setAOAIformat(message=self.extractOutput(output_operator), role='user')
-                prompts_caller.append(content_operator_for_caller)
-            ## a message from caller to operator
-            output_caller = self.send_message_to_openai(message_text=prompts_caller)
-            message(self.extractOutput(output_caller), is_user=False)
+            ## Define initial prompt for caller as system message
+            content_caller_for_evaluator = self.setAOAIformat(message=prompt_evaluator_to_be_used, role='system')
+            prompts_evaluator.append(content_caller_for_evaluator)
+            ## Evaluate with GPT-4
+            output_evaluator = self.send_message_to_openai(message_text=prompts_evaluator)
+            return self.extractOutput(output_evaluator)
+        except Exception as e:
+            print(e)
+            raise
 
-            # Operator -> Caller
-            ## Set message by caller
-            content_caller = self.setAOAIformat(message=self.extractOutput(output_caller), role='user')
-            content_caller_for_caller = self.setAOAIformat(message=self.extractOutput(output_caller), role='assistant')
-            ## Set the message in the prompt
-            prompts_operator.append(content_operator)
-            prompts_operator.append(content_caller)
-            ## a message from operator to caller
-            output_operator = self.send_message_to_openai(message_text=prompts_operator)
-            message(self.extractOutput(output_operator), is_user=True)
-
-
+    def convert_to_df(self,
+                     evaluate_result: list) -> pd.DataFrame:
+        '''
+        Convert evaluation result to DataFrame
+        '''
+        try:
+            json_data = json.loads(evaluate_result)
+            return pd.DataFrame(json_data).T        
+        except Exception as e:
+            print(e)
+            raise

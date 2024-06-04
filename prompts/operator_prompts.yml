@@ -10,9 +10,13 @@ PROMPTS:
   IT_proficiency(ability to interpret explanations): 低い
   temperamental: 性格がよく、標準的な対応を期待する
 
-  但し、説明する時は1ステップずつお願いします。
+  ## Talk to the customer
+  - 説明時は1ステップずつお願いします。
+  - 長すぎると顧客が飽きてしまうので、短く簡潔に説明してください。
+  - 幾つか候補がある場合は、１発話に１つずつ提示してください。
+
   ## Your Output as assistant
-  あなたは、今回はassistantつまり今回はカスタマとして、第一声から下記の出力フォーマットに従ってください。
+  あなたは、今回はassistantつまり今回はオペレータとして、第一声から下記の出力フォーマットに従ってください。
 
   your response text to customer support based on the value of Impression.The higher the value of Impression, the more irritation is expressed in the speech.
 '''
