@@ -73,7 +73,7 @@ class AOAI_TOOLS(LOAD_CONFIG):
         Configuration for client on Azure OpenAI
         '''
         try:
-            ## Configuration
+            ## Configuration for AOAI client
             self.AOAI_client = AzureOpenAI(
                 azure_endpoint = self.AZURE_ENDPOINT, 
                 api_key=self.AZURE_OPENAI_KEY,  
@@ -130,7 +130,7 @@ class AOAI_TOOLS(LOAD_CONFIG):
                               conversation_number: int,
                               prompt_caller: str,
                               prompt_operator: str,
-                              ui_flg: bool=False,) -> None:
+                              ui_flg: bool=False,) -> list:
         '''
         Generate conversation with both prompts for caller and operator
         '''
@@ -192,8 +192,10 @@ class AOAI_TOOLS(LOAD_CONFIG):
         Evaluate conversation
         '''
         try:
-            connected_conversation = '\n'.join(conversation)
             prompts_evaluator = []
+            ## Convert conversation to string
+            connected_conversation = '\n'.join(conversation)
+            ## Set the conversation to the prompt
             prompt_evaluator_to_be_used = prompt_evaluator.replace('<<actual_conversation>>', connected_conversation)
 
             ## Define initial prompt for caller as system message
