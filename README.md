@@ -41,6 +41,11 @@ We recommend to run the app before analyzing the codes.
             TOP_P: 0.95
             FREQUENCY_PENALTY: 0
             PRESENCE_PENALTY: 0
+    PROMPTS:
+        PROMPT_PATH:
+            CALLER: './prompts/caller_prompts.yml'
+            OPERATOR: './prompts/operator_prompts.yml'
+            EVALUATOR: './prompts/evaluation.yml'
     ```
 
     Specify appropriate values:
@@ -48,9 +53,14 @@ We recommend to run the app before analyzing the codes.
         - `ENDPOINT`: AOAI Endpoint
         - `KEY`: Key value related to `ENDPOINT`
         - `VERSION`: version you use
-        - `MODEL`: Model name you use
+        - `MODEL`: Model name you use.
         - `PARAMETERS`: Some parameters for AOAI. Please make sure the concrete meaning in [this site](https://learn.microsoft.com/en-us/azure/ai-services/openai/reference).
-        
+    - `PROMPTS`
+        - `PROMPT_PATH`
+            - `CALLER`: path to prompts for caller
+            - `OPERATOR`: path to prompts for operator
+            - `EVALUATOR` : path to prompts for evaluation    
+    
 
 4. Run the app
 
