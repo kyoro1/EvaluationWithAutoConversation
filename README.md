@@ -22,7 +22,7 @@ We recommend to run the app before analyzing the codes.
 
 1. Prepare your `python` environment
     ```sh
-    pip install -r ../requirements.txt
+    pip install -r ./requirements.txt
     ```
 
 2. Provision the [Azure OpenAI Service](https://learn.microsoft.com/en-us/azure/ai-services/openai/) to get access to Azure OpenAI services including `endpoint`, `key`.
