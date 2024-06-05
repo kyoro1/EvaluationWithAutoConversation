@@ -192,7 +192,6 @@ class AOAI_TOOLS(LOAD_CONFIG):
         Evaluate conversation
         '''
         try:
-            print(type(conversation), conversation)
             connected_conversation = '\n'.join(conversation)
             prompts_evaluator = []
             prompt_evaluator_to_be_used = prompt_evaluator.replace('<<actual_conversation>>', connected_conversation)
