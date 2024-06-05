@@ -1,4 +1,4 @@
-# EvaluationWithAutoConversation
+# Overview
 
 This repository provides you several features about automatic generation of conversation and their evaluation with GPT models. Some typical prompts are ready in `./prompts` directory botn in English and Japanese. They enable you to generate conversation and evaluation by yourself.
 
