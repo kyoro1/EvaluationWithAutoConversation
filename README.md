@@ -25,7 +25,7 @@ We recommend to run the app before analyzing the codes.
     pip install -r ../requirements.txt
     ```
 
-2. Provision the [Azure OpenAI Service](https://learn.microsoft.com/en-us/azure/ai-services/openai/).
+2. Provision the [Azure OpenAI Service](https://learn.microsoft.com/en-us/azure/ai-services/openai/) to get access to Azure OpenAI services including `endpoint`, `key`.
 
 3. Prepare `config.yml` in root directory with the following format:
 
@@ -53,6 +53,7 @@ We recommend to run the app before analyzing the codes.
         
 
 4. Run the app
+
     Run [the app](./app.py) from your terminal.
     ```sh
     > streamlit run ./app.py
@@ -60,6 +61,7 @@ We recommend to run the app before analyzing the codes.
     Please refer [Get started in Streamlit](https://docs.streamlit.io/get-started) in detail.
 
 5. Supllmentary material
+
     The notebook [AutoConversation.ipynb](./AutoConversation.ipynb) provides you the basic feature, which are included in [the application](./app.py). Please run Jupyter Notebook in your environment:
 
     ```sh
