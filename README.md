@@ -25,7 +25,9 @@ We recommend to run the app before analyzing the codes.
     pip install -r ../requirements.txt
     ```
 
-2. Please prepare `config.yml` in root directory with the following format:
+2. Provision the [Azure OpenAI Service](https://learn.microsoft.com/en-us/azure/ai-services/openai/).
+
+3. Prepare `config.yml` in root directory with the following format:
 
     ```yml
     AOAI:
@@ -50,13 +52,13 @@ We recommend to run the app before analyzing the codes.
         - `PARAMETERS`: Some parameters for AOAI. Please make sure the concrete meaning in [this site](https://learn.microsoft.com/en-us/azure/ai-services/openai/reference).
         
 
-2. Run the app
+4. Run the app
     ```sh
     > streamlit run ./app.py
     ```
     Please refer [Get started in Streamlit](https://docs.streamlit.io/get-started) in detail.
 
-3. Supllmentary material
+5. Supllmentary material
     ```sh
     > jupyter notebook
     ```
