@@ -8,19 +8,7 @@ tools = common.AOAI_TOOLS(config_file='./config.yml')
 tools.load_config()
 
 ## Load operational prompts
-tools.load_prompts(prompt_name='caller_prompt',
-                    prompt_path='./prompts/caller_prompts.yml')
-tools.load_prompts(prompt_name='operator_prompt',
-                    prompt_path='./prompts/operator_prompts.yml')
-tools.load_prompts(prompt_name='evaluate_prompt',
-                    prompt_path='./prompts/evaluation.yml')
-
-## Extract prompt candidates
-caller_prompt_list = list(tools.promptBank['caller_prompt']['PROMPTS'].keys())
-operator_prompt_list = list(tools.promptBank['operator_prompt']['PROMPTS'].keys())
-evaluator_prompt_list = list(tools.promptBank['evaluate_prompt']['PROMPTS'].keys())
-
-
+tools.prepare_prompts()
 
 ## Sidebar
 with st.sidebar:
@@ -29,17 +17,17 @@ with st.sidebar:
     ## Select prompt for caller and operator
     flag_prompt_caller = st.radio(
         "Prompt for caller",
-        caller_prompt_list
+        tools.caller_prompt_list
     )
 
     flag_prompt_operator = st.radio(
         "Prompt for operator",
-        operator_prompt_list
+        tools.operator_prompt_list
     )
     
     flag_prompt_evaluator = st.radio(
         "Prompt for evaluator",
-        evaluator_prompt_list
+        tools.evaluator_prompt_list
     )
 
     ## Set the number of interactions
@@ -52,9 +40,7 @@ with st.sidebar:
         if submitted:
             st.write(f'Start auto-conversation with {conversation_number} interaction(s).')
 
-if not submitted:
-    st.stop()
-else:
+if submitted:
     ## Set configuration for AOAI client
     tools.setClient()
 
@@ -68,6 +54,9 @@ else:
                                                 prompt_operator=prompt_operator,
                                                 conversation_number=conversation_number,
                                                 ui_flg=True)
+else:
+    st.stop()
+
 
 with st.expander("Evaluation results will be here"):
     evaluate_result = tools.evaluate_conversation(prompt_evaluator = tools.promptBank['evaluate_prompt']['PROMPTS'][flag_prompt_evaluator],

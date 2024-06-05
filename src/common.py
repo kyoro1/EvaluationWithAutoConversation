@@ -27,6 +27,11 @@ class LOAD_CONFIG():
         self.AOAI_FREQUENCY_PENALTY = self.config['AOAI']['PARAMTERS']['FREQUENCY_PENALTY']
         self.AOAI_PRESENCE_PENALTY = self.config['AOAI']['PARAMTERS']['PRESENCE_PENALTY']
 
+        ## Configuration for prompts
+        self.PATH_CALLER_PROMPT = self.config['PROMPTS']['PROMPT_PATH']['CALLER']
+        self.PATH_OPERATOR_PROMPT = self.config['PROMPTS']['PROMPT_PATH']['OPERATOR']
+        self.PATH_EVALUATOR_PROMPT = self.config['PROMPTS']['PROMPT_PATH']['EVALUATOR']
+
     def load_config(self):
         '''
         Load and extract config yml file.
@@ -49,6 +54,11 @@ class AOAI_TOOLS(LOAD_CONFIG):
         ## variables for prompts
         self.promptBank = dict()
 
+        ## list of prompts
+        self.caller_prompt_list = []
+        self.operator_prompt_list = []
+        self.evaluator_prompt_list = []
+
     def load_prompts(self,
                      prompt_name: str,
                      prompt_path: str) -> list:
@@ -67,6 +77,30 @@ class AOAI_TOOLS(LOAD_CONFIG):
         except Exception as e:
             print(e)
             raise
+
+    def prepare_prompts(self):
+        '''
+        Extract prompts from promptBank
+        '''
+        try:
+            # Load operational prompts
+            ## For caller
+            self.load_prompts(prompt_name='caller_prompt',
+                                prompt_path=self.PATH_CALLER_PROMPT)
+            ## For operator
+            self.load_prompts(prompt_name='operator_prompt',
+                                prompt_path=self.PATH_OPERATOR_PROMPT)
+            ## For evaluator
+            self.load_prompts(prompt_name='evaluate_prompt',
+                                prompt_path=self.PATH_EVALUATOR_PROMPT)
+            # Extract prompt candidates
+            self.caller_prompt_list = list(self.promptBank['caller_prompt']['PROMPTS'].keys())
+            self.operator_prompt_list = list(self.promptBank['operator_prompt']['PROMPTS'].keys())
+            self.evaluator_prompt_list = list(self.promptBank['evaluate_prompt']['PROMPTS'].keys())
+        except Exception as e:
+            print(e)
+            raise
+
 
     def setClient(self):
         '''
