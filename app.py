@@ -4,11 +4,6 @@ from src import common
 
 ## Initialization of the tools
 tools = common.AOAI_TOOLS(config_file='./config.yml')
-## Load configuration
-tools.load_config()
-
-## Load operational prompts
-tools.prepare_prompts()
 
 ## Sidebar
 with st.sidebar:

@@ -59,6 +59,9 @@ class AOAI_TOOLS(LOAD_CONFIG):
         self.operator_prompt_list = []
         self.evaluator_prompt_list = []
 
+        ## prepare prompts
+        self.prepare_prompts()
+
     def load_prompts(self,
                      prompt_name: str,
                      prompt_path: str) -> list:
