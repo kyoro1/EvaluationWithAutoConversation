@@ -53,16 +53,18 @@ We recommend to run the app before analyzing the codes.
         
 
 4. Run the app
+    Run [the app](./app.py) from your terminal.
     ```sh
     > streamlit run ./app.py
     ```
     Please refer [Get started in Streamlit](https://docs.streamlit.io/get-started) in detail.
 
 5. Supllmentary material
+    The notebook [AutoConversation.ipynb](./AutoConversation.ipynb) provides you the basic feature, which are included in [the application](./app.py). Please run Jupyter Notebook in your environment:
+
     ```sh
     > jupyter notebook
     ```
-    Use [AutoConversation.ipynb](./AutoConversation.ipynb).
 
 ## References
 - [Azure OpenAI](https://learn.microsoft.com/en-us/azure/ai-services/openai/)
